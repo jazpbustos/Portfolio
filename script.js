@@ -24,11 +24,29 @@ if ('IntersectionObserver' in window) {
 
 const header = document.querySelector('.site-header');
 const scrollProgress = document.querySelector('.scroll-progress');
-const heroFlower = document.querySelector('.hero-flower');
 const parallaxStages = [...document.querySelectorAll('[data-parallax]')];
-const contactStar = document.querySelector('.contact-star');
+const scrollScenes = [...document.querySelectorAll('.small-cover.device-scene')];
 let scrollFrame = 0;
-let scrollEnabled = true;
+const sectionLinks = [...document.querySelectorAll('[data-section]')];
+let activeSection = null;
+function updateSectionNavigation(position, maximum) {
+  if (!sectionLinks.length) return;
+  let current = '';
+  const marker = Math.max(100, innerHeight * .3);
+  sectionLinks.forEach(link => {
+    const section = document.getElementById(link.dataset.section);
+    if (section && section.getBoundingClientRect().top <= marker) current = section.id;
+  });
+  if (maximum > 1 && position >= maximum - 4) current = sectionLinks[sectionLinks.length - 1].dataset.section;
+  if (activeSection === current) return;
+  activeSection = current;
+  sectionLinks.forEach(link => {
+    const active = link.dataset.section === current;
+    link.classList.toggle('active', active);
+    if (active) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+}
 
 function renderScroll() {
   scrollFrame = 0;
@@ -36,20 +54,23 @@ function renderScroll() {
   const max = Math.max(1, root.scrollHeight - window.innerHeight);
   scrollProgress.style.transform = `scaleX(${Math.min(1, position / max)})`;
   header.classList.toggle('is-scrolled', position > 30);
-  if (motionPreference.matches || !scrollEnabled) return;
-  heroFlower.style.transform = `rotate(${position * 0.075}deg)`;
+  updateSectionNavigation(position, max);
+  if (motionPreference.matches || !finePointer.matches || innerWidth <= 900) return;
+  scrollScenes.forEach(scene => {
+    const bounds = scene.getBoundingClientRect();
+    if (bounds.bottom > 0 && bounds.top < innerHeight) {
+      const offset = Math.max(-24, Math.min(24, (innerHeight / 2 - bounds.top - bounds.height / 2) * .09));
+      scene.style.setProperty('--scroll-drift', `${offset.toFixed(2)}px`);
+    }
+  });
   if (window.innerWidth > 580) {
     parallaxStages.forEach(stage => {
       const bounds = stage.getBoundingClientRect();
       if (bounds.bottom > 0 && bounds.top < window.innerHeight) {
-        const offset = (window.innerHeight / 2 - bounds.top - bounds.height / 2) * 0.055;
+        const offset = (window.innerHeight / 2 - bounds.top - bounds.height / 2) * 0.1;
         stage.querySelector('.parallax-layer').style.transform = `translate3d(0,${offset.toFixed(2)}px,0)`;
       }
     });
-  }
-  const contactBounds = contactStar.getBoundingClientRect();
-  if (contactBounds.top < window.innerHeight && contactBounds.bottom > 0) {
-    contactStar.style.transform = `rotate(${(window.innerHeight - contactBounds.top) * 0.08}deg)`;
   }
 }
 function requestScrollRender() {
@@ -97,22 +118,6 @@ window.addEventListener('resize', () => {
   if (window.innerWidth > 580) closeMenu();
 }, { passive: true });
 
-if ('IntersectionObserver' in window) {
-  const navLinks = [...document.querySelectorAll('[data-section]')];
-  const sectionObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      navLinks.forEach(link => {
-        const active = link.dataset.section === entry.target.id;
-        link.classList.toggle('active', active);
-        if (active) link.setAttribute('aria-current', 'location');
-        else link.removeAttribute('aria-current');
-      });
-    });
-  }, { rootMargin: '-20% 0px -65% 0px', threshold: 0 });
-  navLinks.forEach(link => sectionObserver.observe(document.getElementById(link.dataset.section)));
-}
-
 // Real, local interactions inside the conceptual covers (WAI-ARIA tabs).
 document.querySelectorAll('[role="tablist"]').forEach(list => {
   const tabs = [...list.querySelectorAll('[role="tab"]')];
@@ -147,8 +152,8 @@ let pointerX = 0;
 let pointerY = 0;
 let pointerFrame = 0;
 function movePointer(event) {
-  pointerX = event.clientX;
-  pointerY = event.clientY;
+  pointerX = Math.max(48, Math.min(event.clientX, window.innerWidth - 48));
+  pointerY = Math.max(48, Math.min(event.clientY, window.innerHeight - 48));
   if (pointerFrame) return;
   pointerFrame = requestAnimationFrame(() => {
     pointerLabel.style.transform = `translate3d(${pointerX}px,${pointerY}px,0)`;
@@ -179,166 +184,6 @@ document.querySelectorAll('.magnetic').forEach(element => {
   });
 });
 
-// Project content: known facts only; no guessed frameworks, dates or role claims.
-const projects = {
-  aprendizaje: {
-    category: '01 / EDUCACIÓN + INTELIGENCIA ARTIFICIAL',
-    title: 'Aprendizaje adaptativo <em>con IA.</em>',
-    intro: 'Un sistema educativo que integra modelos de lenguaje, personalización del aprendizaje y desarrollo de software.',
-    tags: ['LLM', 'Personalización', 'Software educativo'],
-    note: 'La portada es una dirección visual conceptual. No representa una captura del sistema ni una demostración del modelo de IA.',
-    problemTitle: 'La idea',
-    problem: 'Explorar cómo el software y los modelos de lenguaje pueden acompañar distintas formas de aprender, conectando el contenido con las necesidades de cada persona.',
-    features: ['Integración de modelos de lenguaje (LLM).', 'Personalización del aprendizaje.', 'Una experiencia educativa desarrollada como sistema de software.'],
-    next: 'entrenamiento', nextLabel: 'Plataforma de entrenamiento'
-  },
-  entrenamiento: {
-    category: '02 / ENTRENAMIENTO + APLICACIÓN WEB',
-    title: 'Entrenamiento <em>conectado.</em>',
-    intro: 'Una aplicación web que reúne a entrenadores y alumnos, desde la planificación hasta el seguimiento del rendimiento.',
-    tags: ['Gestión de usuarios', 'Planificación', 'Estadísticas', 'Mensajería'],
-    note: 'La portada es una dirección visual conceptual. Las pantallas y el gráfico de ejemplo no representan datos ni capturas reales del sistema.',
-    problemTitle: 'La idea',
-    problem: 'Reunir las distintas partes del entrenamiento en un mismo lugar: quién entrena, qué se planifica, cómo evoluciona y cómo se comunica con su entrenador.',
-    features: ['Gestión de entrenadores y alumnos.', 'Planificación de rutinas y seguimiento del rendimiento.', 'Estadísticas para acompañar el entrenamiento.', 'Mensajería e intercambio de videos.'],
-    next: 'milenium', nextLabel: 'Milenium Gym'
-  },
-  milenium: {
-    category: '03 / GESTIÓN + DESARROLLO WEB',
-    title: 'Milenium <em>Gym.</em>',
-    intro: 'Un sistema para centralizar la gestión de clientes, cuotas y actividades de un gimnasio.',
-    tags: ['HTML', 'CSS', 'JavaScript', 'Supabase'],
-    note: 'Herramienta privada de uso interno. La galería usa las capturas de demostración del portfolio anterior.',
-    problemTitle: 'El problema',
-    problem: 'Organizar en una sola herramienta la información de los socios, sus pagos, las actividades y el registro de ingreso, para acompañar la operación cotidiana del gimnasio.',
-    features: ['Gestión de clientes y control de deudas.', 'Registro e historial de pagos.', 'Panel de estadísticas.', 'Gestión de actividades.', 'Check-in de socios.'],
-    gallery: [
-      { src: 'assets/milenium-02-socios-demo.png', alt: 'Listado de socios de Milenium Gym, captura de demostración', caption: 'Gestión de socios' },
-      { src: 'assets/milenium-04-detalle-socio-demo.png', alt: 'Detalle de un socio, actividades y pagos, captura de demostración', caption: 'Detalle de socio y pagos' },
-      { src: 'assets/milenium-06-movimientos-demo.png', alt: 'Panel de movimientos y pagos de Milenium Gym, captura de demostración', caption: 'Movimientos e historial de pagos' },
-      { src: 'assets/milenium-07-estadisticas.png', alt: 'Panel de estadísticas de Milenium Gym', caption: 'Estadísticas del sistema' }
-    ],
-    next: 'solana', nextLabel: 'Solana Becerra'
-  },
-  solana: {
-    category: '04 / DISEÑO + DESARROLLO WEB',
-    title: 'Solana <em>Becerra.</em>',
-    intro: 'Un sitio web profesional para presentar de forma clara y accesible la identidad y el trabajo de una abogada.',
-    tags: ['HTML', 'CSS', 'JavaScript', 'Responsive'],
-    problemTitle: 'Mi participación',
-    problem: 'Organicé los contenidos, diseñé y desarrollé la interfaz responsive y optimicé el sitio para fortalecer su presencia online.',
-    features: ['Organización y jerarquía de contenidos.', 'Diseño y desarrollo de la interfaz.', 'Adaptación a distintos dispositivos.'],
-    gallery: [{ src: 'assets/solana-becerra.jpg', alt: 'Sitio web profesional de Solana Becerra, captura real', caption: 'Sitio web profesional · captura real' }],
-    links: [{ href: 'https://abogadabecerra.netlify.app/', label: 'Visitar sitio ↗' }],
-    next: 'aprendizaje', nextLabel: 'Aprendizaje adaptativo con IA'
-  }
-};
-const dialog = document.getElementById('project-dialog');
-const dialogBody = document.getElementById('dialog-body');
-let currentProject = '';
-let galleryIndex = 0;
-let returnFocusTo = null;
-let closingDialog = false;
-let closeAnimation = null;
-
-function renderProject(key) {
-  const project = projects[key];
-  if (!project) return;
-  currentProject = key;
-  galleryIndex = 0;
-  // All markup comes from the trusted static project data above, never from URL input.
-  dialogBody.innerHTML = `
-    <p class="dialog-category">${project.category}</p>
-    <h2 id="dialog-title">${project.title}</h2>
-    <p class="dialog-intro">${project.intro}</p>
-    <div class="dialog-tags">${project.tags.map(tag => `<span>${tag}</span>`).join('')}</div>
-    ${project.note ? `<p class="dialog-note">${project.note}</p>` : ''}
-    ${project.gallery ? `<figure class="dialog-gallery"><div class="gallery-frame"><img id="gallery-image" src="${project.gallery[0].src}" alt="${project.gallery[0].alt}" width="1366" height="768"></div><figcaption class="gallery-bar"><span class="gallery-caption" aria-live="polite">${project.gallery[0].caption}</span>${project.gallery.length > 1 ? `<div class="gallery-controls"><button type="button" data-gallery="-1" aria-label="Captura anterior">←</button><span class="gallery-count" aria-live="polite">1 / ${project.gallery.length}</span><button type="button" data-gallery="1" aria-label="Captura siguiente">→</button></div>` : ''}</figcaption></figure>` : ''}
-    <div class="dialog-grid"><div><h3>${project.problemTitle}</h3><p>${project.problem}</p></div><div><h3>Qué reúne el proyecto</h3><ul>${project.features.map(feature => `<li>${feature}</li>`).join('')}</ul></div></div>
-    ${project.links ? `<div class="dialog-links">${project.links.map(link => `<a href="${link.href}" target="_blank" rel="noopener noreferrer">${link.label}</a>`).join('')}</div>` : ''}
-    <div class="dialog-next"><span>SEGUIR EXPLORANDO</span><button type="button" data-next-project="${project.next}">${project.nextLabel}<span aria-hidden="true">↗</span></button></div>`;
-  dialog.scrollTop = 0;
-}
-
-function openProject(key, trigger) {
-  if (!projects[key]) return;
-  if (!dialog.open) returnFocusTo = trigger || document.activeElement;
-  closingDialog = false;
-  if (closeAnimation) { closeAnimation.cancel(); closeAnimation = null; }
-  renderProject(key);
-  if (!dialog.open) {
-    dialog.showModal();
-    document.body.classList.add('modal-open');
-    scrollEnabled = false;
-    if (!motionPreference.matches) {
-      dialog.animate([{ opacity: 0, transform: 'translateY(35px) scale(.97)' }, { opacity: 1, transform: 'translateY(0) scale(1)' }], { duration: 450, easing: 'cubic-bezier(.22,1,.36,1)' });
-    }
-  }
-  document.querySelector('.dialog-close').focus({ preventScroll: true });
-}
-
-function closeProject() {
-  if (!dialog.open || closingDialog) return;
-  closingDialog = true;
-  if (motionPreference.matches) dialog.close();
-  else {
-    closeAnimation = dialog.animate([{ opacity: 1, transform: 'translateY(0) scale(1)' }, { opacity: 0, transform: 'translateY(18px) scale(.98)' }], { duration: 180, easing: 'ease-in', fill: 'forwards' });
-    closeAnimation.finished.then(() => {
-      dialog.close();
-      closeAnimation.cancel();
-      closeAnimation = null;
-    }).catch(() => {});
-  }
-}
-document.querySelectorAll('[data-open-project]').forEach(button => {
-  button.addEventListener('click', () => openProject(button.dataset.openProject, button));
-});
-document.querySelector('.dialog-close').addEventListener('click', closeProject);
-dialog.addEventListener('cancel', event => { event.preventDefault(); closeProject(); });
-let backdropPointer = false;
-dialog.addEventListener('pointerdown', event => { backdropPointer = event.target === dialog; });
-dialog.addEventListener('click', event => {
-  if (event.target !== dialog || !backdropPointer) return;
-  const bounds = dialog.getBoundingClientRect();
-  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closeProject();
-});
-dialog.addEventListener('close', () => {
-  document.body.classList.remove('modal-open');
-  scrollEnabled = true;
-  closingDialog = false;
-  if (returnFocusTo?.isConnected) returnFocusTo.focus({ preventScroll: true });
-  requestScrollRender();
-});
-
-function changeGallery(direction) {
-  const gallery = projects[currentProject]?.gallery;
-  if (!gallery || gallery.length < 2) return;
-  galleryIndex = (galleryIndex + direction + gallery.length) % gallery.length;
-  const item = gallery[galleryIndex];
-  const image = document.getElementById('gallery-image');
-  image.src = item.src;
-  image.alt = item.alt;
-  dialogBody.querySelector('.gallery-caption').textContent = item.caption;
-  dialogBody.querySelector('.gallery-count').textContent = `${galleryIndex + 1} / ${gallery.length}`;
-  if (!motionPreference.matches) image.animate([{ opacity: .4 }, { opacity: 1 }], { duration: 230 });
-}
-dialogBody.addEventListener('click', event => {
-  const galleryButton = event.target.closest('[data-gallery]');
-  if (galleryButton) changeGallery(Number(galleryButton.dataset.gallery));
-  const nextButton = event.target.closest('[data-next-project]');
-  if (nextButton) {
-    renderProject(nextButton.dataset.nextProject);
-    document.querySelector('.dialog-close').focus({ preventScroll: true });
-  }
-});
-dialog.addEventListener('keydown', event => {
-  if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
-  if (projects[currentProject]?.gallery?.length > 1 && ['ArrowLeft', 'ArrowRight'].includes(event.key)) {
-    event.preventDefault();
-    changeGallery(event.key === 'ArrowRight' ? 1 : -1);
-  }
-});
-
 // Clipboard with honest success / failure feedback, including file:// previews.
 const email = 'jaz_bustos@outlook.com';
 const copyButton = document.querySelector('.copy-email');
@@ -350,7 +195,7 @@ function notify(message) {
   toast.classList.add('is-visible');
   toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 3200);
 }
-copyButton.addEventListener('click', async () => {
+copyButton?.addEventListener('click', async () => {
   try {
     if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
     await navigator.clipboard.writeText(email);
@@ -360,3 +205,157 @@ copyButton.addEventListener('click', async () => {
   }
 });
 document.getElementById('year').textContent = String(new Date().getFullYear());
+
+// Pointer-driven CSS depth; screens can extend beyond their backdrop without
+// moving the headings. Native links still support open-in-new-tab and history.
+document.querySelectorAll('.device-scene').forEach(scene => {
+  let depthFrame = 0;
+  let depthX = 0;
+  let depthY = 0;
+  scene.addEventListener('pointermove', event => {
+    if (!finePointer.matches || motionPreference.matches || event.pointerType === 'touch') return;
+    const bounds = scene.getBoundingClientRect();
+    depthX = -((event.clientY - bounds.top) / bounds.height - .5) * 5;
+    depthY = ((event.clientX - bounds.left) / bounds.width - .5) * 7;
+    if (!depthFrame) depthFrame = requestAnimationFrame(() => {
+      scene.style.setProperty('--rx', `${depthX.toFixed(2)}deg`);
+      scene.style.setProperty('--ry', `${depthY.toFixed(2)}deg`);
+      depthFrame = 0;
+    });
+  });
+  scene.addEventListener('pointerleave', () => {
+    if (depthFrame) { cancelAnimationFrame(depthFrame); depthFrame = 0; }
+    scene.style.removeProperty('--rx');
+    scene.style.removeProperty('--ry');
+  });
+});
+
+// A gallery within the project page; nothing opens in a modal.
+const galleryImage = document.getElementById('case-gallery-image');
+const galleryThumbnails = [...document.querySelectorAll('[data-gallery-index]')];
+if (galleryImage && galleryThumbnails.length) {
+  let selectedImage = 0;
+  const galleryFigure = document.querySelector('.case-gallery');
+  const galleryCaption = document.querySelector('.case-gallery-caption');
+  const galleryCount = document.querySelector('.case-gallery-count');
+  const galleryFull = document.querySelector('.case-gallery-full');
+  function selectImage(index) {
+    selectedImage = (index + galleryThumbnails.length) % galleryThumbnails.length;
+    const selected = galleryThumbnails[selectedImage];
+    galleryImage.src = selected.dataset.src;
+    galleryImage.alt = selected.dataset.alt;
+    galleryCaption.textContent = selected.dataset.caption;
+    galleryCount.textContent = `${selectedImage + 1} / ${galleryThumbnails.length}`;
+    galleryFull.href = selected.dataset.src;
+    galleryImage.closest("a.image-expand").href = selected.dataset.src;
+    galleryImage.closest("a.image-expand").setAttribute("aria-label", `Abrir imagen completa: ${selected.dataset.alt}`);
+    galleryThumbnails.forEach((thumb, i) => thumb.setAttribute('aria-pressed', String(i === selectedImage)));
+    if (!motionPreference.matches) galleryImage.animate([{opacity:.45,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}],{duration:250,easing:'ease-out'});
+  }
+  galleryThumbnails.forEach((thumb, index) => thumb.addEventListener('click', () => selectImage(index)));
+  document.querySelectorAll('[data-gallery-step]').forEach(button => button.addEventListener('click', () => selectImage(selectedImage + Number(button.dataset.galleryStep))));
+  function galleryKeys(event) {
+    if (!['ArrowLeft','ArrowRight'].includes(event.key) || event.altKey || event.ctrlKey || event.metaKey) return;
+    event.preventDefault();
+    selectImage(selectedImage + (event.key === 'ArrowRight' ? 1 : -1));
+  }
+  galleryFigure.addEventListener('keydown', galleryKeys);
+  document.querySelector('.gallery-thumbnails').addEventListener('keydown', galleryKeys);
+}
+
+
+// Ambient satin-like gradients: a seamless CSS loop, active only on screen.
+const ambientScenes = [...document.querySelectorAll('[data-ambient]')];
+if ('IntersectionObserver' in window) {
+  const ambientObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => entry.target.classList.toggle('is-live', entry.isIntersecting));
+  });
+  ambientScenes.forEach(scene => ambientObserver.observe(scene));
+} else ambientScenes.forEach(scene => scene.classList.add('is-live'));
+document.addEventListener('visibilitychange', () => root.classList.toggle('page-hidden', document.hidden));
+
+// Gentle wheel inertia. Touch, keyboard, zoom and nested scrolling stay native.
+let wheelFrame = 0;
+let wheelTarget = 0;
+let wheelPosition = 0;
+let wheelTime = 0;
+function stopWheel() {
+  if (wheelFrame) cancelAnimationFrame(wheelFrame);
+  wheelFrame = 0;
+  root.classList.remove('wheel-smoothing');
+}
+function easeWheel(time) {
+  const dt = Math.min(40, Math.max(1, time - wheelTime));
+  wheelTime = time;
+  wheelTarget = Math.min(wheelTarget, Math.max(0, root.scrollHeight - innerHeight));
+  const remaining = wheelTarget - wheelPosition;
+  if (Math.abs(remaining) < .5) {
+    window.scrollTo(0, wheelTarget);
+    stopWheel();
+    return;
+  }
+  wheelPosition += remaining * (1 - Math.exp(-dt / 115));
+  window.scrollTo(0, wheelPosition);
+  wheelFrame = requestAnimationFrame(easeWheel);
+}
+window.addEventListener('wheel', event => {
+  if (!finePointer.matches || innerWidth <= 900 || motionPreference.matches || event.defaultPrevented || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey || !event.deltaY || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+  if (event.deltaMode === 0 && Math.abs(event.deltaY) < 40) { stopWheel(); return; }
+  if (document.body.style.overflow === 'hidden' || mainNav.classList.contains('is-open')) return;
+  for (let element = event.target instanceof Element ? event.target : null; element && element !== document.body; element = element.parentElement) {
+    const css = getComputedStyle(element);
+    if (['INPUT','TEXTAREA','SELECT','VIDEO','IFRAME'].includes(element.tagName) || element.isContentEditable || (/auto|scroll/.test(css.overflowY) && element.scrollHeight > element.clientHeight + 1)) {
+      stopWheel();
+      return;
+    }
+  }
+  const maximum = Math.max(0, root.scrollHeight - innerHeight);
+  if (!maximum) return;
+  const delta = event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? innerHeight : 1);
+  if (!wheelFrame) wheelTarget = wheelPosition = scrollY;
+  wheelTarget = Math.min(maximum, Math.max(0, wheelTarget + delta));
+  event.preventDefault();
+  root.classList.add('wheel-smoothing');
+  if (!wheelFrame) {
+    wheelTime = performance.now();
+    wheelFrame = requestAnimationFrame(easeWheel);
+  }
+}, {passive:false});
+window.addEventListener('keydown', stopWheel, {passive:true});
+window.addEventListener('pointerdown', stopWheel, {passive:true});
+window.addEventListener('touchstart', stopWheel, {passive:true});
+window.addEventListener('resize', stopWheel, {passive:true});
+window.addEventListener('pagehide', stopWheel);
+motionPreference.addEventListener('change', stopWheel);
+
+// Full-size screenshots: swipe, native scrolling, named navigation and keyboard.
+document.querySelectorAll('.screen-reel').forEach(reel => {
+  const track = reel.querySelector('.screen-track');
+  const slides = [...track.querySelectorAll('.screen-slide')];
+  const indices = [...reel.querySelectorAll('[data-screen]')];
+  const caption = reel.querySelector('.screen-caption');
+  const count = reel.querySelector('.screen-count');
+  let current = 0;
+  let frame = 0;
+  function renderScreen() {
+    frame = 0;
+    current = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+    caption.textContent = slides[current].getAttribute('aria-label').split(': ').slice(1).join(': ');
+    if (count) count.textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+    indices.forEach((button,index) => button.setAttribute('aria-pressed', String(index === current)));
+  }
+  function goTo(index) {
+    stopWheel();
+    const next = (index + slides.length) % slides.length;
+    track.scrollTo({left: next * track.clientWidth, behavior: motionPreference.matches ? 'instant' : 'smooth'});
+  }
+  indices.forEach(button => button.addEventListener('click', () => goTo(Number(button.dataset.screen))));
+  reel.querySelectorAll('[data-screen-step]').forEach(button => button.addEventListener('click', () => goTo(current + Number(button.dataset.screenStep))));
+  track.addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(renderScreen); }, {passive:true});
+  track.addEventListener('keydown', event => {
+    if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+    event.preventDefault();
+    goTo(event.key === 'Home' ? 0 : event.key === 'End' ? slides.length - 1 : current + (event.key === 'ArrowRight' ? 1 : -1));
+  });
+  window.addEventListener('resize', () => track.scrollTo({left:current * track.clientWidth,behavior:'instant'}), {passive:true});
+});

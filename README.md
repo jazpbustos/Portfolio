@@ -1,43 +1,52 @@
 # Jazmín Bustos — Portfolio
 
-Portfolio editorial: fondo blanco, texto piedra y detalles pistacho. Desarrollado con HTML, CSS y JavaScript, sin dependencias de ejecución ni proceso de compilación.
+Portfolio personal con fondo blanco, texto piedra y detalles pistacho. HTML, CSS y JavaScript sin dependencias de ejecución ni compilación.
 
-## Vista previa
-
-Con Node.js instalado:
+## Iniciar
 
 ```sh
 npm run dev
 ```
 
-Abrir `http://127.0.0.1:4173`. También se puede abrir `index.html` directamente; la copia del correo depende de los permisos del navegador. Para usar otro puerto: establecer la variable de entorno `PORT`.
+Abrir `http://127.0.0.1:4173`. Con un servidor ya iniciado en otro puerto, usar su URL. También funciona abriendo `index.html` directamente, salvo las funciones del portapapeles que requieren permisos del navegador.
 
-## Qué incluye
+## Páginas
 
-- Diseño responsive y navegación móvil.
-- Animaciones de entrada, apariciones al recorrer, profundidad en portadas, movimiento asociado al scroll y microinteracciones.
-- Respeto por `prefers-reduced-motion` y contenido visible sin JavaScript.
-- Portadas conceptuales interactivas para aprendizaje con IA y entrenamiento.
-- Casos ampliados en diálogos nativos, navegación por teclado y restauración de foco.
-- Galería de capturas de Milenium Gym y enlace al sitio de Solana Becerra.
-- Contacto, enlaces profesionales y copia de correo con confirmación real.
+- `index.html`: presentación, proyectos, experiencia, formación, conocimientos visibles y contacto.
+- `proyecto-aprendizaje.html`: aprendizaje adaptativo con IA, portada conceptual interactiva.
+- `proyecto-entrenamiento.html`: plataforma de entrenamiento, portada conceptual interactiva.
+- `proyecto-milenium.html`: sistema de gestión y galería de nueve capturas.
+- `proyecto-solana.html`: sitio profesional de Solana Becerra y enlace al sitio real.
+
+Los proyectos usan enlaces nativos y páginas independientes. No hay popups. Cada página tiene título y descripción propios, enlace al listado y siguiente proyecto.
+
+## Diseño e interacción
+
+- `styles.css`: sistema visual base y responsive.
+- `refinements.css`: dispositivos, presentación editorial y contacto discreto.
+- `depth.css`: profundidad CSS 3D y páginas de proyecto.
+- `identity.css`: identidad final, fondo abstracto animado, biografía, tecnologías originales en monocromo, contacto y footer.
+- `script.js`: animaciones, navegación móvil, pestañas, interacción de profundidad, galerías y copia de email.
+- `assets/`: escenas, favicon y capturas. Las copias WebP de Milenium se generaron sin pérdida para reducir transferencia; las fuentes PNG se conservan.
+
+Los dispositivos tienen profundidad con perspectiva CSS y responden suavemente al puntero. Se integran al fondo de las tarjetas y sobresalen por su borde inferior, sin invadir sus títulos. El hover circular muestra sólo «Ver proyecto», sin flecha debajo, y es adicional al cursor nativo. Los efectos respetan `prefers-reduced-motion`. El fondo abstracto pistacho tiene un loop continuo hecho con CSS; se pausa fuera de pantalla y al ocultar la pestaña. No requiere video ni librerías.
+
+El inicio presenta a Jazmín con los pilares software, informática e inteligencia artificial. «Sobre mí» amplía su experiencia y sus intereses en requerimientos, arquitectura e IA. Las tecnologías se presentan con SVG originales de Simple Icons, guardados localmente, en gris y con acento pistacho y nombre al pasar el puntero o enfocar con teclado. En dispositivos táctiles se muestran los nombres. Las fuentes y licencia se incluyen en `assets/icons/sources.json` y `assets/icons/LICENSE.md`.
+
+En las páginas de proyectos, las capturas del dispositivo y de la galería son enlaces a la imagen completa, sin recorte, en otra pestaña. El enlace se actualiza al cambiar la captura seleccionada.
 
 ## Contenido
 
-Editar los textos de la página en `index.html`. Los casos, imágenes y enlaces se administran en el objeto `projects` de `script.js`. La paleta y los tamaños están en `styles.css`.
+Editar los textos y enlaces directamente en los archivos HTML. Milenium y Solana recuperan las descripciones y funcionalidades del portfolio anterior. La experiencia profesional y los conocimientos se basan en la descripción de LinkedIn aportada por Jazmín. La formación indica «Estudiante avanzada» y Universidad Siglo 21.
 
-Las portadas de los dos sistemas nuevos son composiciones conceptuales, identificadas en la página. No se atribuyen tecnologías, métricas, fechas de lanzamiento ni roles que no estén confirmados. Sustituirlas por capturas reales cuando estén disponibles. La formación dice «Estudiante avanzada de la Licenciatura en Informática». La experiencia en SINAV no incluye un cargo ni tareas inventadas.
+Las portadas de los dos sistemas nuevos son conceptuales y están identificadas. No son capturas reales ni se atribuyen tecnologías de implementación que no estén confirmadas.
 
-Las capturas existentes provienen del portfolio anterior. La escena de piedra y hojas se generó con ImageGen como recurso visual y se convirtió a WebP. Las tipografías DM Sans e Instrument Serif se cargan desde Google Fonts, con alternativas del sistema si no hay conexión.
+La escena de piedra y hojas fue generada con ImageGen y convertida a WebP. DM Sans e Instrument Serif se cargan desde Google Fonts, con alternativas locales si no hay conexión.
 
-## Publicación
-
-Sitio estático: publicar la raíz en Vercel, Netlify o GitHub Pages. En Vercel seleccionar `Other`, sin comando de build ni instalación; directorio de salida `.`. `server.cjs` es solamente para desarrollo local.
-
-## Verificación
+## Verificación y publicación
 
 ```sh
 npm run check
 ```
 
-Comprobar en navegador escritorio y móvil: navegación, pestañas de portadas, apertura/cierre de proyectos, galería, enlaces y movimiento reducido. No se requieren paquetes externos.
+Verificar navegación entre páginas, galerías, pestañas, menú móvil y movimiento reducido. Para publicar, servir esta carpeta como sitio estático en Vercel, Netlify o GitHub Pages, sin comando de build. `server.cjs` es sólo para vista previa local.

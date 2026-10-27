@@ -1,0 +1,62 @@
+[
+  {
+    "name": "html5",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/html5.svg"
+  },
+  {
+    "name": "css",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/css.svg"
+  },
+  {
+    "name": "javascript",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/javascript.svg"
+  },
+  {
+    "name": "php",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/php.svg"
+  },
+  {
+    "name": "mysql",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/mysql.svg"
+  },
+  {
+    "name": "postgresql",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/postgresql.svg"
+  },
+  {
+    "name": "supabase",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/supabase.svg"
+  },
+  {
+    "name": "wordpress",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/wordpress.svg"
+  },
+  {
+    "name": "elementor",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/elementor.svg"
+  },
+  {
+    "name": "python",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/python.svg"
+  },
+  {
+    "name": "github",
+    "version": "16.36.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@16.36.0/icons/github.svg"
+  },
+  {
+    "name": "linkedin",
+    "version": "11.15.0",
+    "url": "https://cdn.jsdelivr.net/npm/simple-icons@11.15.0/icons/linkedin.svg"
+  }
+]
