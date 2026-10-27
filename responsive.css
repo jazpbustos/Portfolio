@@ -81,3 +81,9 @@ main{overflow-x:clip}.small-cover.device-scene{transform-style:flat}
 }
 .case-project-name{font-size:17px;line-height:1.5;color:#849473;margin:18px 0 12px}.small-project-heading{height:auto;min-height:90px;padding-bottom:18px}.project-caption .project-description{font-size:14px;color:#82916f}.case-next-link>strong{text-wrap:balance}
 @media(max-width:580px){.case-project-name{font-size:14px;margin:14px 0 10px}.secondary-projects .small-project-heading{min-height:0;padding-bottom:0}.project-caption .project-description{font-size:12px}.secondary-projects .small-project-heading h3{text-wrap:balance}}
+/* Align captions with the visible backdrop, which is inset within the 3D scene. */
+.secondary-projects .small-project-heading{padding-left:calc(3% + 1px);padding-right:3%;box-sizing:border-box}
+@media(min-width:581px){.secondary-projects .small-project-heading{height:116px;min-height:116px;padding-top:0;padding-bottom:18px}.secondary-projects .small-project-heading h3{font-size:clamp(25px,2.35vw,36px);line-height:1.18}}
+@media(max-width:580px){.secondary-projects .small-project-heading{height:auto;min-height:0;padding-left:3%;padding-right:3%}}
+.secondary-projects .small-cover.device-scene .scene-backdrop{transform:none}.secondary-projects .small-project-heading{padding-left:0;padding-right:0}
+@media(min-width:581px){.secondary-projects .small-project-heading{height:106px;min-height:106px}}
