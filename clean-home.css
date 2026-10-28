@@ -288,4 +288,24 @@
 .featured-scene .liftia-phone-screen .liftia-splash{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;border-radius:0;opacity:1}
 @keyframes liftia-stable-loading{0%,24%{transform:translate3d(0,0,0)}34%,84%{transform:translate3d(0,-100%,0)}94%,100%{transform:translate3d(0,0,0)}}
 @media(max-width:580px){.liftia-phone-screen{border-radius:8px}.featured-scene .liftia-phone,.featured-scene:hover .liftia-phone{transform:rotateZ(3deg);transition:none}}
-@media(prefers-reduced-motion:reduce){.liftia-phone-screen>.liftia-splash-screen{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.liftia-phone-screen>.liftia-splash-screen{animation:none!important}}/* Keep device silhouettes and their shadows clear of the captions on phones. */
+@media(max-width:580px){
+ .featured-scene{height:clamp(320px,86vw,440px)}
+ .featured-scene .study-laptop{top:44%;left:5%;right:5%}
+ .featured-project .project-caption{padding-top:26px}
+ .liftia-equipment{left:-5.5%;bottom:5%;width:42%}
+ .featured-scene .liftia-tablet{left:20%;width:61%;top:46%}
+ .secondary-projects .small-cover{margin-bottom:24px}
+ .secondary-projects .small-project-heading{position:relative;padding-top:8px}
+}/* Compact captions without using large blank safety margins. */
+@media(min-width:581px){
+ .featured-scene{height:clamp(600px,54vw,760px)}
+ .featured-project .project-caption{padding-top:8px;padding-bottom:24px}
+}
+@media(max-width:580px){
+ .secondary-projects .small-cover{margin-bottom:8px}
+ .secondary-projects .small-project-heading{padding-top:0}
+ .secondary-projects .solana-cover .portfolio-laptop{top:33%}
+ .secondary-projects .solana-cover{margin-bottom:0}
+ .secondary-projects .solana-cover+.small-caption{margin-top:0}
+}
