@@ -1,0 +1,64 @@
+/* Muted olive and cream with one slow, broad wave. */
+.hero.identity-hero,.ambient-hero{background:#f1f1e9}.ambient-hero .ambient-field{inset:-30%;background:radial-gradient(ellipse at 75% 45%,#c8cdbb 0%,#e7e8dc 38%,#f7f5ef 72%)}.ambient-hero .ribbon-one{background:linear-gradient(128deg,transparent 12%,#c4ccb570 25%,#83916b8c 37%,#a1ad8b8c 45%,#f1eee2e0 55%,#fffdf8b3 64%,transparent 78%);filter:blur(38px);animation:banner-wave 25s ease-in-out infinite;animation-play-state:paused}.ambient-hero .ribbon-two{background:linear-gradient(153deg,transparent 27%,#697a504d 42%,#929f7d66 49%,#e0e3d5a3 59%,transparent 72%);filter:blur(36px);animation-duration:31s;opacity:.75}.ambient-hero .ribbon-three{background:linear-gradient(140deg,transparent 30%,#faf8eff2 44%,#f7f5ecc9 53%,transparent 68%);filter:blur(33px);animation-duration:29s;opacity:.8}.ambient-hero .ambient-contours{opacity:.3;animation-duration:34s}.ambient-hero .ambient-noise{opacity:.045}.projects .section-heading:before{background:linear-gradient(#f1f1e9,#f8f7f1 65%,white)}
+@keyframes banner-wave{0%,100%{transform:translate(8%,-3%) rotate(-10deg) scale(1.05)}50%{transform:translate(-7%,5%) rotate(-3deg) scale(1.12)}}
+.viewer-stage>img{cursor:default}
+@media(max-width:580px){.hero.identity-hero,.ambient-hero{background:#f1f1e9}.ambient-hero .ambient-field{inset:-25% -55%;background:radial-gradient(ellipse at 75% 35%,#c7ceb9 0%,#e5e7da 45%,#f6f4ec 77%)}.ambient-hero .ribbon-one{filter:blur(28px);animation-duration:23s}.ambient-hero .ribbon-two{filter:blur(27px);animation-duration:29s}.ambient-hero .ribbon-three{filter:blur(25px)}.projects .section-heading:before{background:linear-gradient(#f1f1e9,#f8f7f1 65%,white)}}
+@media(prefers-reduced-motion:reduce){.ambient-hero .ambient-ribbon{animation:none!important}}
+.hero-inner{text-align:left}.identity-hero h1{margin-left:0;margin-right:0}.hero-pillars{justify-content:flex-start}.hero-description{text-align:left;margin-left:0;margin-right:0}
+@media(max-width:580px){.hero-inner{text-align:left}.identity-hero h1{margin-left:0;margin-right:0}.hero-pillars{justify-content:flex-start}.hero-description{text-align:left;margin-left:0;margin-right:0}}
+/* Visible, continuous wave motion with the same muted olive palette. */
+.ambient-hero .ribbon-one{animation:hero-aura-wave 9s ease-in-out infinite;animation-play-state:paused;filter:blur(32px)}
+.ambient-hero .ribbon-two{animation:hero-aura-counter 12s ease-in-out infinite;animation-play-state:paused;filter:blur(32px)}
+.ambient-hero .ribbon-three{animation:hero-aura-wave 11s ease-in-out -4s infinite;animation-play-state:paused}
+.ambient-hero .ambient-contours{inset:-10%;width:120%;height:120%;opacity:.6;animation:hero-lines-drift 10s ease-in-out infinite;animation-play-state:paused;stroke-width:.9}
+.ambient-hero .ambient-contours path{animation:hero-line-bend 9s ease-in-out infinite;animation-play-state:paused}
+.ambient-hero .ambient-contours path:nth-child(2){animation-name:hero-line-bend-two;animation-duration:10s}
+.ambient-hero .ambient-contours path:nth-child(3){animation-name:hero-line-cross;animation-duration:12s}
+.ambient-hero.is-live .ambient-ribbon,.ambient-hero.is-live .ambient-contours,.ambient-hero.is-live .ambient-contours path{animation-play-state:running}
+.page-hidden .ambient-hero .ambient-ribbon,.page-hidden .ambient-hero .ambient-contours,.page-hidden .ambient-hero .ambient-contours path{animation-play-state:paused}
+@keyframes hero-aura-wave{0%,100%{transform:translate(-10%,8%) rotate(-15deg) scale(1.08,1)}50%{transform:translate(12%,-9%) rotate(4deg) scale(1.1,1.18)}}
+@keyframes hero-aura-counter{0%,100%{transform:translate(14%,-8%) rotate(14deg) scale(1.08)}50%{transform:translate(-12%,10%) rotate(-6deg) scale(1.2,1.03)}}
+@keyframes hero-lines-drift{0%,100%{transform:translate(-3%,4%) rotate(-3deg)}50%{transform:translate(4%,-5%) rotate(3deg)}}
+@keyframes hero-line-bend{0%,100%{d:path('M-150 460C300 710 610-140 1510 270')}50%{d:path('M-150 330C340 40 680 740 1510 190')}}
+@keyframes hero-line-bend-two{0%,100%{d:path('M-80 480C340 670 620-100 1480 310')}50%{d:path('M-80 365C350 90 710 700 1480 230')}}
+@keyframes hero-line-cross{0%,100%{d:path('M-100-40C270-90 210 310 690 470S1140 650 1510 500')}50%{d:path('M-100 110C310 500 360-100 800 180S1220 660 1510 360')}}
+@media(max-width:580px){.ambient-hero .ribbon-one{filter:blur(27px)}.ambient-hero .ribbon-two{filter:blur(26px)}.ambient-hero .ambient-contours{opacity:.55}}
+@media(prefers-reduced-motion:reduce){.ambient-hero .ambient-ribbon,.ambient-hero .ambient-contours,.ambient-hero .ambient-contours path{animation:none!important}}/* A broad olive wave flows as one with its white contours. */
+.ambient-hero .ambient-field{background:radial-gradient(ellipse at 70% 50%,#d7dccd 0%,#eeeee4 49%,#f7f5ef 78%)}
+.ambient-hero .ribbon-one{inset:10% -20%;background:linear-gradient(180deg,transparent 5%,#9ba98a55 27%,#788b6599 45%,#8c9d7580 59%,transparent 86%);border-radius:45% 55% 48% 52%;filter:blur(38px);animation:hero-green-swell 16s ease-in-out infinite;animation-play-state:paused;transform-origin:center}
+.ambient-hero .ribbon-two{inset:6% -18%;background:radial-gradient(ellipse at 72% 50%,#74875e75 0%,#a3af8b55 30%,transparent 62%);filter:blur(40px);animation:hero-green-swell 16s ease-in-out -2s infinite;animation-play-state:paused;opacity:.8}
+.ambient-hero .ribbon-three{background:linear-gradient(155deg,transparent 28%,#faf7efe0 43%,#faf7efbb 53%,transparent 68%);animation:hero-cream-swell 16s ease-in-out infinite;animation-play-state:paused;filter:blur(34px)}
+.ambient-hero .ambient-contours{animation-duration:16s}
+.ambient-hero .ambient-contours path{animation-duration:16s}
+.ambient-hero .ambient-contours path:nth-child(2){animation-duration:17s}
+.ambient-hero .ambient-contours path:nth-child(3){animation-duration:18s}
+@keyframes hero-green-swell{0%,100%{transform:translate(-8%,5%) rotate(-13deg) scale(1.08,.78);border-radius:42% 58% 43% 57%}50%{transform:translate(9%,-6%) rotate(9deg) scale(1.16,1.12);border-radius:57% 43% 60% 40%}}
+@keyframes hero-cream-swell{0%,100%{transform:translate(-8%,5%) rotate(-13deg) scale(1.05)}50%{transform:translate(9%,-6%) rotate(9deg) scale(1.13)}}
+@media(max-width:580px){.ambient-hero .ribbon-one{filter:blur(28px)}.ambient-hero .ribbon-two{filter:blur(30px)}.ambient-hero .ribbon-three{filter:blur(27px)}}
+.ambient-hero.is-live .ambient-ribbon{animation-play-state:running}
+.page-hidden .ambient-hero .ambient-ribbon{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){.ambient-hero .ambient-ribbon{animation:none!important}}/* LinkedIn reference: a soft S-shaped ribbon, with cream cutting through olive. */
+.ambient-hero{background:#f4f2ea}
+.ambient-hero .ambient-field{background:radial-gradient(ellipse at 50% 5%,#faf8f1,#f1f0e6 75%)}
+.ambient-hero .ambient-ribbon{display:none}
+.hero-green-wave{position:absolute;inset:-12% -8%;width:116%;height:124%;z-index:1;overflow:visible;opacity:.85}
+.hero-green-wave path{fill:none;stroke-linecap:round;animation-play-state:paused}
+.green-wave-band{stroke:url(#hero-wave-olive);stroke-width:190;animation:olive-ribbon-flow 19s ease-in-out infinite}
+.cream-wave-band{stroke:#faf7ef;stroke-width:95;opacity:.8;animation:cream-ribbon-flow 19s ease-in-out infinite}
+.ambient-hero .ambient-contours{z-index:2;opacity:.32;stroke-width:.7;animation-duration:19s}
+.ambient-hero .ambient-noise{z-index:3;opacity:.06}
+.ambient-hero.is-live .hero-green-wave path{animation-play-state:running}
+.page-hidden .ambient-hero .hero-green-wave path{animation-play-state:paused}
+@keyframes olive-ribbon-flow{0%,100%{d:path('M-240 180C70-70 280 50 440 250S730 540 950 340S1200 170 1640 310');transform:translateY(-15px)}50%{d:path('M-240 320C60 80 290 110 490 320S770 360 980 190S1270 140 1640 380');transform:translateY(15px)}}
+@keyframes cream-ribbon-flow{0%,100%{d:path('M-180 300C120 20 300 155 490 335S790 540 1010 400S1310 220 1580 400')}50%{d:path('M-180 430C120 190 320 210 530 400S810 440 1050 280S1340 240 1580 490')}}
+@media(max-width:580px){.hero-green-wave{inset:-5% -38%;width:176%;height:110%;opacity:.85}.green-wave-band{stroke-width:175}.cream-wave-band{stroke-width:85}}
+@media(prefers-reduced-motion:reduce){.hero-green-wave path{animation:none!important}}/* Fine white threads cross the olive ribbon rather than tracing it. */
+.ambient-hero .ambient-contours{opacity:.16;stroke-width:.65;animation:hero-cross-drift 22s ease-in-out infinite;animation-play-state:paused}
+.ambient-hero .ambient-contours path{animation:hero-cross-thread 22s ease-in-out infinite;animation-play-state:paused}
+.ambient-hero .ambient-contours path:nth-child(2){animation-name:hero-cross-thread-two;animation-duration:24s}
+.ambient-hero .ambient-contours path:nth-child(3){display:none}
+@keyframes hero-cross-drift{0%,100%{transform:translate(-2%,0)}50%{transform:translate(3%,1%)}}
+@keyframes hero-cross-thread{0%,100%{d:path('M390-100C190 100 730 210 570 390S560 620 790 730')}50%{d:path('M470-100C280 100 800 180 640 380S620 620 870 730')}}
+@keyframes hero-cross-thread-two{0%,100%{d:path('M430-100C240 110 780 200 620 400S610 630 840 730')}50%{d:path('M520-100C330 100 850 180 700 390S680 630 930 730')}}
+@media(max-width:580px){.ambient-hero .ambient-contours{opacity:.13;stroke-width:.6}}
+@media(prefers-reduced-motion:reduce){.ambient-hero .ambient-contours,.ambient-hero .ambient-contours path{animation:none!important}.ambient-hero .ambient-contours path{d:path('M390-100C190 100 730 210 570 390S560 620 790 730')}}

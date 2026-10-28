@@ -359,3 +359,67 @@ document.querySelectorAll('.screen-reel').forEach(reel => {
   });
   window.addEventListener('resize', () => track.scrollTo({left:current * track.clientWidth,behavior:'instant'}), {passive:true});
 });
+
+// Images open in a native dialog instead of leaving the project page.
+const imageGroups = {
+  study: [{src:'assets/studymindia-home.png',alt:'Inicio de StudyMindIA — En desarrollo'}],
+  liftia: [
+    {src:'assets/liftia-dashboard.png',alt:'LIFTIA — Panel de entrenamiento'},
+    {src:'assets/liftia-login.png',alt:'LIFTIA — Acceso a la plataforma'},
+    {src:'assets/liftia-mobile.png',alt:'LIFTIA — Pantalla móvil'},
+    {src:'assets/liftia-brandboard.png',alt:'LIFTIA — Exploración visual e interfaces'}
+  ]
+};
+const imageViewer = document.createElement('dialog');
+imageViewer.className = 'image-viewer';
+imageViewer.setAttribute('aria-label','Imagen ampliada del proyecto');
+imageViewer.innerHTML = '<div class="viewer-toolbar"><span class="viewer-caption" aria-live="polite"></span><button class="viewer-close" type="button" aria-label="Cerrar imagen">×</button></div><div class="viewer-stage"><img alt="" draggable="false"></div><div class="viewer-controls"><button type="button" data-viewer-step="-1" aria-label="Imagen anterior">←</button><span class="viewer-count" aria-live="polite"></span><button type="button" data-viewer-step="1" aria-label="Imagen siguiente">→</button></div>';
+document.body.append(imageViewer);
+const viewerImage = imageViewer.querySelector('img');
+const viewerCaption = imageViewer.querySelector('.viewer-caption');
+const viewerCount = imageViewer.querySelector('.viewer-count');
+let viewerItems = [], viewerIndex = 0, previousBodyOverflow = '', viewerSource = null;
+function renderViewer(index) {
+  viewerIndex = (index + viewerItems.length) % viewerItems.length;
+  const item = viewerItems[viewerIndex];
+  viewerImage.src = item.src;viewerImage.alt = item.alt;
+  viewerCaption.textContent = item.alt;
+  viewerCount.textContent = `${viewerIndex + 1} / ${viewerItems.length}`;
+  imageViewer.classList.remove('is-zoomed');
+  imageViewer.querySelectorAll('[data-viewer-step]').forEach(button => button.disabled = viewerItems.length < 2);
+  imageViewer.querySelector('.viewer-stage').scrollTo(0,0);
+}
+function openViewer(items, index, source) {
+  if (typeof stopWheel === 'function') stopWheel();
+  viewerItems = items;viewerSource = source;
+  previousBodyOverflow = document.body.style.overflow;
+  document.body.style.overflow = 'hidden';
+  renderViewer(index);imageViewer.showModal();
+}
+document.addEventListener('click', event => {
+  const trigger = event.target.closest('[data-image],a.screen-expand,a.image-expand');
+  if (!trigger || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  const group = trigger.dataset.imageGroup;
+  if (group && imageGroups[group]) {
+    const list = imageGroups[group];
+    openViewer(list,Math.max(0,list.findIndex(item=>item.src===trigger.dataset.image)),trigger);
+  } else {
+    const reel = trigger.closest('.screen-reel,.case-gallery-section');
+    const links = reel ? [...reel.querySelectorAll('a.screen-expand,a.image-expand')] : [trigger];
+    const list = links.map(link => ({src:link.getAttribute('href')||link.dataset.image,alt:link.querySelector('img')?.alt||'Imagen del proyecto'}));
+    openViewer(list,Math.max(0,links.indexOf(trigger)),trigger);
+  }
+});
+imageViewer.querySelector('.viewer-close').addEventListener('click',()=>imageViewer.close());
+imageViewer.addEventListener('close',()=>{
+  document.body.style.overflow=previousBodyOverflow;
+  imageViewer.classList.remove('is-zoomed');
+  viewerSource?.focus({preventScroll:true});
+});
+imageViewer.querySelectorAll('[data-viewer-step]').forEach(button=>button.addEventListener('click',()=>renderViewer(viewerIndex+Number(button.dataset.viewerStep))));
+imageViewer.addEventListener('keydown',event=>{
+  if (!['ArrowLeft','ArrowRight'].includes(event.key)||event.altKey||event.ctrlKey||event.metaKey) return;
+  event.preventDefault();renderViewer(viewerIndex+(event.key==='ArrowRight'?1:-1));
+});
+

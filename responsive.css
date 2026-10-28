@@ -87,3 +87,5 @@ main{overflow-x:clip}.small-cover.device-scene{transform-style:flat}
 @media(max-width:580px){.secondary-projects .small-project-heading{height:auto;min-height:0;padding-left:3%;padding-right:3%}}
 .secondary-projects .small-cover.device-scene .scene-backdrop{transform:none}.secondary-projects .small-project-heading{padding-left:0;padding-right:0}
 @media(min-width:581px){.secondary-projects .small-project-heading{height:106px;min-height:106px}}
+
+.case-hero .case-intro{text-wrap:wrap}@media(max-width:580px){.case-hero .case-intro{max-width:none;width:100%;letter-spacing:-.25px}}
