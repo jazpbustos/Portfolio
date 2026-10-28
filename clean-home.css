@@ -264,4 +264,14 @@
 @media(max-width:580px){.project-title-status{display:block}.project-title-status>.development-badge{display:none}.projects .featured-project .project-title-status h3{width:100%}.study-particle-ribbon{clip-path:inset(5% 0 15% round 4px)}}/* A small increase keeps the development status easy to read. */
 .project-title-status>.development-badge{font-size:11px;padding:8px 13px;gap:8px}
 .project-title-status>.development-badge>i{width:6px;height:6px}
-@media(max-width:580px){.featured-scene .mobile-development-badge{font-size:12px;padding:10px 14px;gap:8px}}
+@media(max-width:580px){.featured-scene .mobile-development-badge{font-size:12px;padding:10px 14px;gap:8px}}/* Content must never depend on a reveal callback on touch-size layouts. */
+@media(max-width:900px){
+ html.motion-ready .reveal,html.motion-ready .reveal.is-visible{opacity:1!important;transform:none!important;transition:none!important}
+ html.motion-ready .entrance{animation:none!important;opacity:1;transform:none}
+ .secondary-projects .small-project-heading{height:auto;min-height:0;overflow:visible}
+ .secondary-projects .small-project-heading h3,.featured-project .project-caption h3{overflow:visible}
+ .motion-ready .profile-portrait .portrait-frame img{opacity:1;clip-path:none;animation:none}
+}
+.featured-scene .particle-wave,.featured-scene .particle-wave circle,.featured-scene .liftia-splash-screen,.featured-scene .liftia-loading-sweep:after{animation-play-state:paused!important}
+.featured-scene.preview-active .particle-wave,.featured-scene.preview-active .particle-wave circle,.featured-scene.preview-active .liftia-splash-screen,.featured-scene.preview-active .liftia-loading-sweep:after{animation-play-state:running!important}
+@media(prefers-reduced-motion:reduce){.featured-scene.preview-active .particle-wave,.featured-scene.preview-active .liftia-splash-screen,.featured-scene.preview-active .liftia-loading-sweep:after{animation:none!important}}

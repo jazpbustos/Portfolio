@@ -16,7 +16,7 @@ if ('IntersectionObserver' in window) {
         revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.07, rootMargin: '0px 0px -12px 0px' });
+  }, { threshold: 0, rootMargin: '0px 0px 80px 0px' });
   reveals.forEach(element => revealObserver.observe(element));
 } else {
   reveals.forEach(element => element.classList.add('is-visible'));
@@ -423,3 +423,23 @@ imageViewer.addEventListener('keydown',event=>{
   event.preventDefault();renderViewer(viewerIndex+(event.key==='ArrowRight'?1:-1));
 });
 
+
+// Stop preview work when it cannot be seen, including background tabs.
+const previewScenes = [...document.querySelectorAll('.featured-scene')];
+function syncPreview(scene) {
+  const active = scene.dataset.inView === 'true' && !document.hidden;
+  scene.classList.toggle('preview-active', active);
+  scene.querySelectorAll('video').forEach(video => {
+    if (active && !motionPreference.matches) video.play().catch(() => {});
+    else video.pause();
+  });
+}
+if ('IntersectionObserver' in window) {
+  const previewObserver = new IntersectionObserver(entries => entries.forEach(entry => {
+    entry.target.dataset.inView = String(entry.isIntersecting);
+    syncPreview(entry.target);
+  }), {rootMargin: '40px 0px', threshold: 0});
+  previewScenes.forEach(scene => previewObserver.observe(scene));
+} else previewScenes.forEach(scene => {scene.dataset.inView = 'true'; syncPreview(scene);});
+document.addEventListener('visibilitychange', () => previewScenes.forEach(syncPreview));
+motionPreference.addEventListener('change', () => previewScenes.forEach(syncPreview));

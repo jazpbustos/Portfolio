@@ -89,3 +89,5 @@ main{overflow-x:clip}.small-cover.device-scene{transform-style:flat}
 @media(min-width:581px){.secondary-projects .small-project-heading{height:106px;min-height:106px}}
 
 .case-hero .case-intro{text-wrap:wrap}@media(max-width:580px){.case-hero .case-intro{max-width:none;width:100%;letter-spacing:-.25px}}
+
+@media(max-width:900px){html.motion-ready .reveal{opacity:1!important;transform:none!important;transition:none!important}html.motion-ready .entrance{animation:none!important;opacity:1;transform:none}.small-project-heading{height:auto;min-height:0}}
