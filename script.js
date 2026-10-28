@@ -169,7 +169,9 @@ document.querySelectorAll('[data-hover-label]').forEach(element => {
   });
   element.addEventListener('pointermove', movePointer);
   element.addEventListener('pointerleave', () => pointerLabel.classList.remove('is-visible'));
-  element.addEventListener('click', () => pointerLabel.classList.remove('is-visible'));
+  element.addEventListener('click', () => {
+    if (!element.classList.contains('featured-scene')) pointerLabel.classList.remove('is-visible');
+  });
 });
 document.querySelectorAll('.magnetic').forEach(element => {
   element.addEventListener('pointermove', event => {
@@ -361,15 +363,6 @@ document.querySelectorAll('.screen-reel').forEach(reel => {
 });
 
 // Images open in a native dialog instead of leaving the project page.
-const imageGroups = {
-  study: [{src:'assets/studymindia-home.png',alt:'Inicio de StudyMindIA — En desarrollo'}],
-  liftia: [
-    {src:'assets/liftia-dashboard.png',alt:'LIFTIA — Panel de entrenamiento'},
-    {src:'assets/liftia-login.png',alt:'LIFTIA — Acceso a la plataforma'},
-    {src:'assets/liftia-mobile.png',alt:'LIFTIA — Pantalla móvil'},
-    {src:'assets/liftia-brandboard.png',alt:'LIFTIA — Exploración visual e interfaces'}
-  ]
-};
 const imageViewer = document.createElement('dialog');
 imageViewer.className = 'image-viewer';
 imageViewer.setAttribute('aria-label','Imagen ampliada del proyecto');
@@ -400,16 +393,10 @@ document.addEventListener('click', event => {
   const trigger = event.target.closest('[data-image],a.screen-expand,a.image-expand');
   if (!trigger || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
   event.preventDefault();
-  const group = trigger.dataset.imageGroup;
-  if (group && imageGroups[group]) {
-    const list = imageGroups[group];
-    openViewer(list,Math.max(0,list.findIndex(item=>item.src===trigger.dataset.image)),trigger);
-  } else {
     const reel = trigger.closest('.screen-reel,.case-gallery-section');
     const links = reel ? [...reel.querySelectorAll('a.screen-expand,a.image-expand')] : [trigger];
     const list = links.map(link => ({src:link.getAttribute('href')||link.dataset.image,alt:link.querySelector('img')?.alt||'Imagen del proyecto'}));
     openViewer(list,Math.max(0,links.indexOf(trigger)),trigger);
-  }
 });
 imageViewer.querySelector('.viewer-close').addEventListener('click',()=>imageViewer.close());
 imageViewer.addEventListener('close',()=>{

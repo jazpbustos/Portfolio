@@ -4,8 +4,8 @@
 .viewer-stage>img{cursor:default}
 @media(max-width:580px){.hero.identity-hero,.ambient-hero{background:#f1f1e9}.ambient-hero .ambient-field{inset:-25% -55%;background:radial-gradient(ellipse at 75% 35%,#c7ceb9 0%,#e5e7da 45%,#f6f4ec 77%)}.ambient-hero .ribbon-one{filter:blur(28px);animation-duration:23s}.ambient-hero .ribbon-two{filter:blur(27px);animation-duration:29s}.ambient-hero .ribbon-three{filter:blur(25px)}.projects .section-heading:before{background:linear-gradient(#f1f1e9,#f8f7f1 65%,white)}}
 @media(prefers-reduced-motion:reduce){.ambient-hero .ambient-ribbon{animation:none!important}}
-.hero-inner{text-align:left}.identity-hero h1{margin-left:0;margin-right:0}.hero-pillars{justify-content:flex-start}.hero-description{text-align:left;margin-left:0;margin-right:0}
-@media(max-width:580px){.hero-inner{text-align:left}.identity-hero h1{margin-left:0;margin-right:0}.hero-pillars{justify-content:flex-start}.hero-description{text-align:left;margin-left:0;margin-right:0}}
+.hero-inner{text-align:left}.identity-hero .hero-name{margin-left:0;margin-right:0}.hero-pillars{justify-content:flex-start}.hero-description{text-align:left;margin-left:0;margin-right:0}
+@media(max-width:580px){.hero-inner{text-align:left}.identity-hero .hero-name{margin-left:0;margin-right:0}.hero-pillars{justify-content:flex-start}.hero-description{text-align:left;margin-left:0;margin-right:0}}
 /* Visible, continuous wave motion with the same muted olive palette. */
 .ambient-hero .ribbon-one{animation:hero-aura-wave 9s ease-in-out infinite;animation-play-state:paused;filter:blur(32px)}
 .ambient-hero .ribbon-two{animation:hero-aura-counter 12s ease-in-out infinite;animation-play-state:paused;filter:blur(32px)}

@@ -4,12 +4,18 @@ const fs = require('node:fs');
 const path = require('node:path');
 const base = __dirname;
 const port = Number(process.env.PORT || 4173);
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon' };
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.mp4': 'video/mp4' };
 const server = http.createServer((request, response) => {
   let pathname;
   try { pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname); }
   catch { response.writeHead(400); response.end('Bad request'); return; }
-  const filename = path.resolve(base, `.${pathname === '/' ? '/index.html' : pathname}`);
+  if (pathname === '/index' || pathname.endsWith('.html')) {
+    const target = pathname === '/index' || pathname === '/index.html' ? '/' : pathname.slice(0, -5);
+    response.writeHead(308, {Location: target + new URL(request.url, 'http://localhost').search});
+    response.end(); return;
+  }
+  const route = pathname === '/' ? '/index.html' : (!path.extname(pathname) ? pathname + '.html' : pathname);
+  const filename = path.resolve(base, `.${route}`);
   if (filename !== base && !filename.startsWith(base + path.sep)) {
     response.writeHead(403); response.end('Forbidden'); return;
   }
